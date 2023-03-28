@@ -1,10 +1,29 @@
-import React from "react";
-import data from "../data/MovieData";
+import { useState } from "react";
+import Movie from "../interfaces/Movie";
 
-export default function DisplayMovies()
+function getHeaders(data: any)
 {
-    let movies = data.MovieData;
-    let headers: string[] = ['Title', 'Rating', 'Year', 'Category', 'Director', 'Edited?']
+    let headers = [];
+
+    for (let key of Object.keys(data))
+    {
+        let obj = data[key];
+        for (let head of Object.keys(obj))
+        {
+            headers.push(head);
+        }
+        break;
+    }
+
+    return headers;
+}
+
+export default function DisplayMovies(props: any)
+{
+    const [data, setData] = useState(props.data)
+    let headers: string[] = getHeaders(props.data)
+
+    console.log(data);
     
     return(
         <div>
@@ -20,7 +39,7 @@ export default function DisplayMovies()
                 </thead>
                 <tbody>
                     {
-                        movies.map(i => {
+                        data.map((i: Movie) => {
                             return(
                                 <tr>
                                     <td>{i.Title}</td>

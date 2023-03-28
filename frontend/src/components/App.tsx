@@ -7,6 +7,7 @@ import {
     createBrowserRouter,
     RouterProvider,
   } from "react-router-dom";
+import data from "../data/MovieData";
 
 const router = createBrowserRouter([
     {
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/movies",
-        element: <DisplayMovies/>,
+        element: <DisplayMovies data={data.MovieData}/>,
     },
     {
         path: "/podcasts",
