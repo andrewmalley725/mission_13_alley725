@@ -1,60 +1,62 @@
-import { useState } from "react";
-import Movie from "../interfaces/Movie";
+import { useEffect, useState } from "react";
+import Movie from "../types/Movie";
 
-function getHeaders(data: any)
+export default function DisplayMovies()
 {
-    let headers = [];
+    const [data, setData] = useState<Movie[]>();
 
-    for (let key of Object.keys(data))
-    {
-        let obj = data[key];
-        for (let head of Object.keys(obj))
+    useEffect(() => {
+        async function getData()
         {
-            headers.push(head);
+            const url = 'https://localhost:4000/';
+            const data = await fetch(`${url}api/Movie`);
+            const movies = await data.json();
+            setData(movies.movies);
+            
         }
-        break;
-    }
-
-    return headers;
-}
-
-export default function DisplayMovies(props: any)
-{
-    const [data, setData] = useState(props.data)
-    let headers: string[] = getHeaders(props.data)
+        getData();
+    },[])
 
     console.log(data);
     
     return(
         <div>
-            <table className="table table-striped">
+            {
+                data ?
+                <table className="table table-striped">
                 <thead>
                     {
-                        headers.map(i => {
-                            return(
-                                <th>{i}</th>
-                            )
+                        Object.keys(data[0]).map(h => {
+                            return(<th>{h}</th>)
                         })
                     }
                 </thead>
                 <tbody>
-                    {
-                        data.map((i: Movie) => {
-                            return(
-                                <tr>
-                                    <td>{i.Title}</td>
-                                    <td>{i.Rating}</td>
-                                    <td>{i.Year}</td>
-                                    <td>{i.Category}</td>
-                                    <td>{i.Director}</td>
-                                    <td>{i.Edited}</td>
-                                </tr>
-                            )
-                        })
-                    }
+                {
+                    data.map((movie: Movie) => {
+                        return (
+                            <tr key={movie.movieId}>
+                                <td>{movie.movieId}</td>
+                                <td>{movie.category}</td>
+                                <td>{movie.title}</td>
+                                <td>{movie.year}</td>
+                                <td>{movie.director}</td>
+                                <td>{movie.rating}</td>
+                                <td>{movie.edited}</td>
+                                <td>{movie.lentTo}</td>
+                                <td>{movie.notes}</td>
+                            </tr>
+                        )
+                    })
+                }
+
                 </tbody>
                 
-            </table>
+            </table> 
+            : <h1>Loading</h1>
+                
+            }
+            
         </div>
         
     )

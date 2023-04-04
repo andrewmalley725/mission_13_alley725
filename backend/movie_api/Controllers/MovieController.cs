@@ -26,7 +26,7 @@ namespace movie_api.Controllers
         {
             var context = new
             {
-                movies = await _db.Movies.Where(x => x.Edited == "Yes").ToListAsync()
+                movies = await _db.Movies.Where(x => x.Edited == "Yes").OrderBy(x => x.Title).ToListAsync()
             };
 
             return new OkObjectResult(context);
