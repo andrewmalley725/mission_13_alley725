@@ -20,13 +20,16 @@ namespace movie_api.Controllers
         {
             _db = temp;
         }
+
         // GET: api/values
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult> Get()
         {
+            var movies = await _db.Movies.Where(x => x.Edited == "Yes").OrderBy(x => x.Title).ToListAsync();
+
             var context = new
             {
-                movies = await _db.Movies.Where(x => x.Edited == "Yes").OrderBy(x => x.Title).ToListAsync()
+                movies = movies
             };
 
             return new OkObjectResult(context);
