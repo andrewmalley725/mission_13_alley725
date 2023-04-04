@@ -22,7 +22,7 @@ export default function DisplayMovies()
     return(
         <div>
             {
-                data ?
+                data ? //the table code will only be executed one data has been recieved from the API
                 <table className="table table-striped">
                 <thead>
                     {
@@ -53,7 +53,7 @@ export default function DisplayMovies()
                 </tbody>
                 
             </table> 
-            : <h1>Loading</h1>
+            : <h1>Loading</h1> //a loading header will be displayed if data is null
                 
             }
             
